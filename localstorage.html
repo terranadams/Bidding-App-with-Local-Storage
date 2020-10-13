@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+
+<body>
+
+    <input type="text" id="bid1"><button onclick="addValueToArray('bid1')">Add</button>
+    <br>
+    <input type="text" id="bid2"><button onclick="addValueToArray('bid2')">Add</button>
+
+    <div id="bids"></div>
+<script>
+
+let bids = retrieve() || [] // This grabs the array stored in local storage, and fallbacks to just an empty array if failed.
+printBids()
+
+// This function grabs the items in 'bids' (in local strorage) and makes it readable (making it not a string)
+function retrieve() {
+    return JSON.parse(localStorage.getItem("bids"))
+}
+
+// This runs the local storage by turning the items in the array into a string (it must be a string to be saved in local storage)
+function save() {
+let bidsString = JSON.stringify(bids)
+localStorage.setItem("bids", bidsString)
+}
+
+
+function addValueToArray(bidderId) {
+    let bid = document.getElementById(bidderId).value
+    bids.push(bid);
+    printBids();
+    document.getElementById(bidderId).value = ''
+    save(); // This must be run everytime something changes on the page
+}
+
+function printBids() {
+
+    document.getElementById('bids').innerHTML = '' // This line clears everything in the div before reloading its updated version again.
+    bids.forEach( (x) => { // This loop prints everything in the array into the 'bids' div.
+        let innerText = `${x}<br>`
+        document.getElementById('bids').innerHTML += innerText
+    })
+
+}
+</script>
+</body>
+</html>
